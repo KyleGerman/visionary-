@@ -1,1 +1,1 @@
-        console.log("Hello from JavaScript in VS Code!");
+console.log("Hello from JavaScript in VS Code!");
