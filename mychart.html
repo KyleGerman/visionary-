@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MyChart Health App</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Basic internal styling for demo */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0072c6;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <h1>MyChart</h1>
+    </div>
+   <nav>
+  <a href="#">Dashboard</a>
+  <a href="#">Appointments</a>
+  <a href="#">Messages</a>
+  <a href="#">Profile</a>
+  <a href="login.html">Log Out</a>
+</nav>
+
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Welcome, Dwayne the rock johnson
+      </h2>
+      <p>Last login: October 6, 2025</p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Upcoming Appointments</h2>
+        <ul>
+          <li>Oct 12, 2025 - Annual Physical with Dr. Smith</li>
+          <li>Nov 5, 2025 - Lab Test at Main Hospital</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Recent Test Results</h2>
+        <ul>
+          <li>Blood Panel - Normal (Sept 20)</li>
+          <li>Cholesterol - High (Sept 20)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Messages</h2>
+        <ul>
+          <li>Dr. Smith: Follow-up on your results (1 unread)</li>
+        </ul>
+        <a href="#">View all messages →</a>
+      </div>
+
+      <div class="card">
+        <h2>Health Summary</h2>
+        <p>Conditions: Hypertension, Asthma</p>
+        <p>Medications: Lisinopril, Albuterol</p>
+        <a href="#">View full summary →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy;  2025 database management project
+  </footer>
+
+</body>
+</html>
