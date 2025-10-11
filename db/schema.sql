@@ -49,7 +49,7 @@ DROP TABLE IF EXISTS `logins`;
 CREATE TABLE `logins` (
   `login_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `user_id` int NOT NULL COMMENT 'Link to user, only one each',
-  `username` varchar(15) NOT NULL COMMENT 'login username, private for individual',
+  `username` varchar(15) UNIQUE NOT NULL COMMENT 'login username, private for individual',
   `password` varchar(15) NOT NULL COMMENT 'password (for now). Encryptions/constraints?',
   PRIMARY KEY (`login_id`),
   UNIQUE KEY `user_id` (`user_id`),
