@@ -32,10 +32,10 @@ CREATE TABLE `appointments` (
   `notes` text COMMENT 'extra notes and comments',
   `status` varchar(10) NOT NULL COMMENT 'scheduled, in-progress, completed, canceled',
   PRIMARY KEY (`appointment_id`),
-  KEY `patient_id` (`patient_id`),
-  KEY `provider_id` (`provider_id`),
-  CONSTRAINT `appointments_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`),
-  CONSTRAINT `appointments_ibfk_2` FOREIGN KEY (`provider_id`) REFERENCES `providers` (`provider_id`)
+  KEY `patient_check` (`patient_id`),
+  KEY `provider_check` (`provider_id`),
+  CONSTRAINT `patient_check` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `provider_check` FOREIGN KEY (`provider_id`) REFERENCES `providers` (`provider_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Appointment info';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -49,12 +49,12 @@ DROP TABLE IF EXISTS `logins`;
 CREATE TABLE `logins` (
   `login_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `user_id` int NOT NULL COMMENT 'Link to user, only one each',
-  `username` varchar(15) UNIQUE NOT NULL COMMENT 'login username, private for individual',
-  `password` varchar(15) NOT NULL COMMENT 'password (for now). Encryptions/constraints?',
+  `username` varchar(20) NOT NULL COMMENT 'login username, private for individual',
+  `password` varchar(20) NOT NULL COMMENT 'password (for now). Encryptions/constraints?',
   PRIMARY KEY (`login_id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `logins_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Login information';
+  CONSTRAINT `login_update` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Login information';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,8 +71,8 @@ CREATE TABLE `patients` (
   `prescriptions` text COMMENT 'Medications, text (here fn, poss change later)',
   PRIMARY KEY (`patient_id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `patients_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Patient info';
+  CONSTRAINT `user_update` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Patient info';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,8 +88,8 @@ CREATE TABLE `providers` (
   `specialty` text COMMENT 'Position, role/focus. Need to think about this one',
   PRIMARY KEY (`provider_id`),
   UNIQUE KEY `user_id` (`user_id`),
-  CONSTRAINT `providers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Provider info';
+  CONSTRAINT `user_change` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Provider info';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +112,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`),
   CONSTRAINT `users_chk_1` CHECK ((`gender` in (_utf8mb4'M',_utf8mb4'F',_utf8mb4'Q')))
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Main table for all users';
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Main table for all users';
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -124,4 +124,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-07 18:41:31
+-- Dump completed on 2025-10-11 15:14:45
