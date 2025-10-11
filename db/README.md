@@ -1,5 +1,11 @@
 **Database**
 Use MySQL
+DB_USER=root
+DB_PASSWORD=your_password_here
+DB_HOST=localhost
+DB_NAME=Visionary
+DB_PORT=3306
+
 
 Main setup (do this first time only):
 Run:
