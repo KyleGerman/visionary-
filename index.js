@@ -2,6 +2,9 @@ const express = require("express");
 const server = express();
 const port = 3000;
 const mysql = require("mysql2"); // changed from "mysql" → "mysql2"
+const app = express();
+const authRoute = require('./Backend/auth');
+
 require('dotenv').config();
 
 //connection to the database
@@ -20,6 +23,12 @@ db.connect((err) => {
     }
     console.log("Connected to MySQL database!");
 });
+
+// define routes, json parser
+
+app.use(express.json());
+app.use('/api', authRoute);
+
 
 //test route to output data from login table to http://localhost:3000/show
 server.get('/show', (req, res) => {
@@ -41,3 +50,8 @@ server.get("/hello", function (req, res) {
 server.listen(port, function () {
     console.log("Listening on " + port);
 });
+
+module.exports = {
+    db,
+
+};
