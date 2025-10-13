@@ -21,7 +21,7 @@ loginForm.addEventListener("submit", async e => {
         localStorage.setItem('token', result.token);
         window.location.href = '/dashboard.html';
     } else {
-        alert(result.error);
+        alert(result.error); // <-- this throws the error from auth.js (ie. user not found)
         errorMsg.style.display = "block";
     }
 });

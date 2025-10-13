@@ -10,19 +10,23 @@ require('dotenv').config();
 app.use(express.json());
 
 // serve files
-app.use(express.static(path.join(__dirname, '/Public')));
+app.use(express.static(path.join(__dirname, 'Public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Public', 'login.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Public', 'login.html'));
+});
+
 
 // define routes
 app.use('/api', authRoute);
 
 
 //output in console -> if working, outputs the console.log
-app.listen(port, function () {
-    console.log("Listening on " + port);
-});
-
-
-
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
 
 
 
