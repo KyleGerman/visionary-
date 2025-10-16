@@ -1,43 +1,33 @@
 const express = require("express");
-const server = express();
 const port = 3000;
-const mysql = require("mysql2"); // changed from "mysql" → "mysql2"
+const app = express();
+const path = require('path');
+const db = require('./Backend/connect_db')
+const authRoute = require('./Backend/auth');
 require('dotenv').config();
 
-//connection to the database
-const db = mysql.createConnection({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
- 
-// connect to MySQL
-db.connect((err) => {
-    if (err) {
-        console.error("Error connecting to MySQL: ", err);
-        return;
-    }
-    console.log("Connected to MySQL database!");
+// define json parser 
+app.use(express.json());
+
+// serve files
+app.use(express.static(path.join(__dirname, 'Public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Public', 'login.html'));
 });
 
-//test route to output data from login table to http://localhost:3000/show
-server.get('/show', (req, res) => {
-    db.query("SELECT * FROM logins", (err, result) => {
-        if (err)
-        {
-            console.log(err);
-        }
-        res.send(result);
-    });
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'Public', 'login.html'));
 });
 
-//Outputs the prompt when going to localhost:3000/hello route
-server.get("/hello", function (req, res) {
-    res.send("Hello World!");
-});
+
+// define routes
+app.use('/api', authRoute);
+
 
 //output in console -> if working, outputs the console.log
-server.listen(port, function () {
-    console.log("Listening on " + port);
-});
+app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+
+
+
+

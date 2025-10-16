@@ -66,25 +66,7 @@
     </form>
   </div>
 
-  <script>
-    const loginForm = document.getElementById("loginForm");
-    const errorMsg = document.getElementById("error-msg");
-
-    loginForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      // Simple demo credentials
-      if (username === "dwayne" && password === "rock123") {
-        // Simulate successful login and redirect
-        window.location.href = "dashboard.html"; // Change this to your actual dashboard file
-      } else {
-        errorMsg.style.display = "block";
-      }
-    });
-  </script>
+  <script src="/js/login.js"></script>
 
 </body>
 </html>
