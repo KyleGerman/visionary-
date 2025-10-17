@@ -1,9 +1,14 @@
 const express = require('express');
-const router = express.Router();
 const db = require('./connect_db');
 const jwt = require('jsonwebtoken');
 
-router.post('/login', (req,res) => {
+// new user setup
+exports.new_user = async (req, res, next) => {
+    res.send("Not implemented yet")
+}
+
+// login page login, assigns JWT token
+exports.login = async (req, res, next) => {
     const { username, password } = req.body;
 
     db.query('SELECT * FROM logins WHERE username = ?', [username], (err, results) => {
@@ -22,7 +27,23 @@ router.post('/login', (req,res) => {
         res.json({ token });
 
     });
-});
+};
 
-module.exports = router;
+// reads JWT, verifies, and gets user_id
+exports.verify = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.sendStatus(401);
+    console.log(authHeader); // Bearer token
+    const token = authHeader.split(' ')[1];
+    jwt.verify(
+      token,
+      'user session key',
+      (err, decoded) => {
+        if (err) return res.sendStatus(403) // invalid token
+        res.user_id = decoded.user_id; // user_id sent as 'user_id' to next function;
+        next()
+      }
+    )
+}
+
 

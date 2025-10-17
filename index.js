@@ -2,8 +2,7 @@ const express = require("express");
 const port = 3000;
 const app = express();
 const path = require('path');
-const db = require('./Backend/connect_db')
-const authRoute = require('./Backend/auth');
+const router = require('./Backend/routes')
 require('dotenv').config();
 
 // define json parser 
@@ -16,14 +15,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'Public', 'login.html'));
 });
 
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Public', 'login.html'));
-});
-
-
-// define routes
-app.use('/api', authRoute);
-
+app.use('/api', router);
 
 //output in console -> if working, outputs the console.log
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
