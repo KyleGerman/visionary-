@@ -15,10 +15,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'Public', 'login.html'));
 });
 
-app.use('/api', router);
+// define routes
+app.use('/api', authRoute);
 
 //output in console -> if working, outputs the console.log
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
+
 
 
 
