@@ -31,17 +31,19 @@ exports.login = async (req, res, next) => {
 
 // reads JWT, verifies, and gets user_id
 exports.verify = async (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) return res.sendStatus(401);
-    console.log(authHeader); // Bearer token
-    const token = authHeader.split(' ')[1];
-    jwt.verify(
-      token,
-      'user session key',
-      (err, decoded) => {
-        if (err) return res.sendStatus(403) // invalid token
-        res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
-        next()
+
+const authHeader = req.headers['authorization'];
+if (!authHeader) return res.sendStatus(401);
+console.log(authHeader); // Bearer token
+
+const token = authHeader.split(' ')[1]; // splits 'Bearer' and 'token'
+
+jwt.verify(token,'user session key', (err, decoded) => {
+
+if (err) return res.sendStatus(403) // invalid token
+res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
+next()
+
       }
     )
 }
