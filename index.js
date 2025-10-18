@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
 });
 
 // define routes
-app.use('/api', authRoute);
+app.use('/api', router);
 
 //output in console -> if working, outputs the console.log
 app.listen(port, () => console.log(`Server running on http://localhost:${port}`));
