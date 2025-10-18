@@ -40,7 +40,7 @@ exports.verify = async (req, res, next) => {
       'user session key',
       (err, decoded) => {
         if (err) return res.sendStatus(403) // invalid token
-        res.user_id = decoded.user_id; // user_id sent as 'user_id' to next function;
+        res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
         next()
       }
     )

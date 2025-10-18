@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Requires
 const auth = require('./auth');
-
+const profileSection = require('./profile');
 
 
 // AUTHORIZATIONS //
@@ -20,7 +20,8 @@ router.post('/login', auth.login);
 
 // DASHBOARD //
 
-
+// Profile GET request
+router.get('/profile', auth.verify, profileSection.getProfile);
 
 //
 
