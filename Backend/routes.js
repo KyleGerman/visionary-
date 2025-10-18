@@ -8,6 +8,8 @@ const router = express.Router();
 // Requires
 const auth = require('./auth');
 const profileSection = require('./profile');
+const appointments = require('./appointments');
+const messages = require('./messages');
 
 
 // AUTHORIZATIONS //
@@ -22,6 +24,21 @@ router.post('/login', auth.login);
 
 // Profile GET request
 router.get('/profile', auth.verify, profileSection.getProfile);
+
+// Dashboard: get and update dashboard-specific user info
+router.get('/dashboard', auth.verify, profileSection.getDashboard);
+router.put('/dashboard', auth.verify, profileSection.updateFromDashboard);
+
+// Appointments
+router.get('/appointments', auth.verify, appointments.getAppointments);
+router.post('/appointments', auth.verify, appointments.createAppointment);
+router.put('/appointments/:id', auth.verify, appointments.updateAppointment);
+router.delete('/appointments/:id', auth.verify, appointments.deleteAppointment);
+
+// Messages
+router.get('/messages', auth.verify, messages.getMessages);
+router.post('/messages', auth.verify, messages.sendMessage);
+router.put('/messages/:id/read', auth.verify, messages.markRead);
 
 //
 

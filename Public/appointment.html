@@ -3,6 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Visionary Health App - Appointments</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin:0; padding:0; background:#f4f6f8; color:#333 }
+    header { background:#0072c6; color:white; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center }
+    nav a { color:white; margin-left:1rem; text-decoration:none }
+    .container { padding:2rem; max-width:1000px; margin:auto }
+    .card { background:white; padding:1.5rem; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.06); margin-bottom:1rem }
+    .appt-card { padding:8px 0; border-bottom:1px solid #eee }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><h1>Visionary</h1></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="appointment.html">Appointments</a>
+      <a href="messages.html">Messages</a>
+  <a href="profile.html">Profile</a>
+  <a href="health.html">Health</a>
+  <a href="login.html">Log Out</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>Appointments</h2>
+      <p>Manage your upcoming and past appointments here.</p>
+    </section>
+
+    <section class="card">
+      <h3>Upcoming Appointments</h3>
+      <div id="upcomingList">Loading...</div>
+      <hr />
+      <h3>Request new appointment</h3>
+      <form id="apptForm">
+        <label for="scheduled_for">Scheduled for</label>
+        <input id="scheduled_for" type="datetime-local" required />
+        <label for="reason">Reason</label>
+        <input id="reason" type="text" />
+        <label for="notes">Notes</label>
+        <textarea id="notes"></textarea>
+        <div style="margin-top:8px"><button type="submit">Request</button></div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h3>Past Appointments</h3>
+      <div id="pastList">Loading...</div>
+    </section>
+  </main>
+
+  <footer style="text-align:center; padding:1rem; color:#666">&copy; 2025 database management project</footer>
+
+  <script src="/js/appointments.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Visionary Health App</title>
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -57,13 +119,8 @@
     footer {
       text-align: center;
       padding: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 2rem;
-    }
-  </style>
-</head>
-<body>
+
+  <script src="/js/appointments.js"></script>
 
   <header>
     <div class="logo">
@@ -87,10 +144,18 @@
     <section class="grid">
       <div class="card">
         <h2>Upcoming Appointments</h2>
-        <ul>
-          <li>Oct 12, 2025 - Annual Physical with Dr. Smith</li>
-          <li>Nov 5, 2025 - Lab Test at Main Hospital</li>
-        </ul>
+        <div id="upcomingList"></div>
+        <hr />
+        <h3>Request new appointment</h3>
+        <form id="apptForm">
+          <label>Scheduled for</label>
+          <input type="datetime-local" id="scheduled_for" required />
+          <label>Reason</label>
+          <input type="text" id="reason" />
+          <label>Notes</label>
+          <textarea id="notes"></textarea>
+          <button type="submit" style="margin-top:8px">Request</button>
+        </form>
       </div>
 
       <div class="card">

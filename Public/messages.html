@@ -1,117 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Visionary Health App - Messages</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f6f8;
-      color: #333;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visionary Health App - Messages</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f8;
+        color: #333;
+      }
 
-    header {
-      background-color: #0072c6;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+      header {
+        background-color: #0072c6;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
 
-    nav a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-weight: 500;
-    }
+      nav a {
+        color: white;
+        margin-left: 1rem;
+        text-decoration: none;
+        font-weight: 500;
+      }
 
-    nav a:hover {
-      text-decoration: underline;
-    }
+      nav a:hover {
+        text-decoration: underline;
+      }
 
-    .container {
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-    }
+      .container {
+        padding: 2rem;
+        max-width: 900px;
+        margin: auto;
+      }
 
-    .message-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
+      .message-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
 
-    .card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      transition: box-shadow 0.3s ease;
-    }
+      .card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        transition: box-shadow 0.3s ease;
+      }
 
-    .card:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+      .card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
 
-    .card p {
-      margin: 0.5rem 0;
-      line-height: 1.5;
-    }
+      .card p {
+        margin: 0.5rem 0;
+        line-height: 1.5;
+      }
 
-    .card small {
-      color: #666;
-      font-size: 0.85rem;
-    }
+      .card small {
+        color: #666;
+        font-size: 0.85rem;
+      }
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 2rem;
-    }
-  </style>
-</head>
-<body>
+      footer {
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>Visionary</h1>
+      </div>
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="appointment.html">Appointments</a>
+        <a href="messages.html">Messages</a>
+        <a href="profile.html">Profile</a>
+        <a href="health.html">Health</a>
+        <a href="login.html">Log Out</a>
+      </nav>
+    </header>
 
-  <header>
-    <div class="logo">
-      <h1>Visionary</h1>
+    <div class="container">
+      <h2>Your Messages</h2>
+      <section id="messageList" class="message-list">
+        Loading messages...
+      </section>
+
+      <section class="card" style="margin-top: 1rem">
+        <h3>Send Message</h3>
+        <form id="sendForm">
+          <label for="recipient">Recipient (user_id)</label>
+          <input id="recipient" type="number" required />
+          <label for="subject">Subject</label>
+          <input id="subject" type="text" />
+          <label for="body">Message</label>
+          <textarea id="body" required></textarea>
+          <div style="margin-top: 8px"><button type="submit">Send</button></div>
+        </form>
+      </section>
     </div>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="appointment.html">Appointments</a>
-      <a href="messages.html">Messages</a>
-      <a href="profile.html">Profile</a>
-      <a href="login.html">Log Out</a>
-    </nav>
-  </header> 
 
-  <div class="container">
-    <h2>Your Messages</h2>
-    <section class="message-list">
-      <div class="card">
-        <h3>Dr. Smith</h3>
-        <p>Hi, please remember to schedule your annual physical. Let me know if you have any questions.</p>
-        <small>Sent on Oct 1, 2025</small>
-      </div>
+    <footer style="text-align: center; padding: 1rem; color: #666">
+      &copy; 2025 database management project
+    </footer>
 
-
-      <div class="card">
-        <h3>Dr. Jane Doe</h3>
-        <p>Your lab results are in. Please check the results section or schedule a follow-up.</p>
-        <small>Sent on Sep 28, 2025</small>
-      </div>
-
-        <footer>
-    &copy;  2025 database management project
-  </footer>
-
-  
-</body>
+    <script src="/js/messages.js"></script>
+  </body>
 </html>
