@@ -125,7 +125,7 @@
 
         <div class="profile-item">
           <label for="dob">Date of Birth</label>
-          <input type="date" id="dob" name="dob" value="1990-01-01" />
+          <input type="text" id="dob" name="dob" value="1990-01-01" />
         </div>
 
         <div class="profile-item">
@@ -142,35 +142,7 @@
     &copy; 2025 Visionary Health App - Database Management Project
   </footer>
 
-  <script>
-    // Save to localStorage
-    document.getElementById('profileForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const profileData = {
-        fullName: document.getElementById('fullName').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        dob: document.getElementById('dob').value,
-        address: document.getElementById('address').value,
-      };
-
-      localStorage.setItem('myChartProfile', JSON.stringify(profileData));
-      alert('Profile saved locally!');
-    });
-
-    // Load saved data
-    window.onload = function() {
-      const savedData = JSON.parse(localStorage.getItem('myChartProfile'));
-      if (savedData) {
-        document.getElementById('fullName').value = savedData.fullName || '';
-        document.getElementById('email').value = savedData.email || '';
-        document.getElementById('phone').value = savedData.phone || '';
-        document.getElementById('dob').value = savedData.dob || '';
-        document.getElementById('address').value = savedData.address || '';
-      }
-    };
-  </script>
+  <script src ="/js/profile.js"> </script> <!-- Link to profile logic -->
 
   <footer>
     &copy;  2025 database management project

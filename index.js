@@ -2,8 +2,7 @@ const express = require("express");
 const port = 3000;
 const app = express();
 const path = require('path');
-const db = require('./Backend/connect_db')
-const authRoute = require('./Backend/auth');
+const router = require('./Backend/routes')
 require('dotenv').config();
 
 // define json parser 

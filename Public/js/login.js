@@ -9,7 +9,7 @@ loginForm.addEventListener("submit", async e => {
         password: loginForm.password.value
     };
 
-    const res = await fetch('/api/login', { // <-- looks for something in auth.js (route directed from index.js)
+    const res = await fetch('/api/login', { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -21,7 +21,8 @@ loginForm.addEventListener("submit", async e => {
         localStorage.setItem('token', result.token);
         window.location.href = '/dashboard.html';
     } else {
-        alert(result.error); // <-- this throws the error from auth.js (ie. user not found)
+        alert(result.error); // <-- this throws any errors back (ie. user not found)
         errorMsg.style.display = "block";
     }
 });
+
