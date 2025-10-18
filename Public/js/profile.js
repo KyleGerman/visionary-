@@ -1,26 +1,26 @@
-window.onload = async function ()
+window.onload = async function () // loads this function when the page is loaded
 {
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('token'); // get the token from local storage
 
-if (!token) {
+if (!token) { // if no token found, redirect to login page
     alert("Please log in first.");
     window.location.href = "/login.html";
     return;
 }
 
-try
+try // try to fetch profile data
 {
-    const res = await fetch('/api/profile', {
+    const res = await fetch('/api/profile', { // fetch profile data from the server
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'authorization': 'Bearer ' + token }
     });
 
-    const data = await res.json();
+    const data = await res.json(); // parse the JSON response
 
-    if (!res.ok)
+    if (!res.ok) // if response is not ok, show error message
     {
         this.alert(data.error || "Failed to fetch profile data.");
         return;
@@ -34,7 +34,7 @@ try
     document.getElementById("address").value = data.address || "";
 }
 
-catch (err)
+catch (err) // catch any errors during fetch
 {
     console.error("Error fetching profile data:", err);
 }
