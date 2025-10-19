@@ -3,9 +3,38 @@ const db = require('./connect_db');
 const jwt = require('jsonwebtoken');
 
 // new user setup
-exports.new_user = async (req, res, next) => {
-    res.send("Not implemented yet")
-}
+exports.newUser = async (req, res) => {
+    const { firstName, lastName, gender, email, phone, dob, address, username, password } = req.body;
+
+    const user_create = 'INSERT INTO users (first_name, last_name, birth_date, gender, email, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?)'; 
+        
+    db.query(user_create, [firstName, lastName, dob, gender, email, phone, address], (err, results) => {
+        if (err) {
+            console.error("Database query error:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+        
+        // results.insertId contains the auto-generated user_id
+        const newUserId = results.insertId;
+
+        const login_create = 'INSERT INTO logins (user_id, username, password) VALUES (?, ?, ?)';
+
+        db.query(login_create, [newUserId, username, password], (err2) => {
+            if (err2) {
+                console.error("Login creation error:", err2);
+                return res.status(500).json({ error: 'Internal server error' });
+            }
+
+            const token = jwt.sign(
+            { id: newUserId, username: username }, 
+            'user session key', 
+            { expiresIn: '1h' });
+
+            res.json({ token });
+        
+        });
+    });
+};
 
 // login page login, assigns JWT token
 exports.login = async (req, res, next) => {
@@ -32,20 +61,18 @@ exports.login = async (req, res, next) => {
 // reads JWT, verifies, and gets user_id
 exports.verify = async (req, res, next) => {
 
-const authHeader = req.headers['authorization'];
-if (!authHeader) return res.sendStatus(401);
-console.log(authHeader); // Bearer token
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.sendStatus(401);
+    console.log(authHeader); // Bearer token
 
-const token = authHeader.split(' ')[1]; // splits 'Bearer' and 'token'
+    const token = authHeader.split(' ')[1]; // splits 'Bearer' and 'token'
 
-jwt.verify(token,'user session key', (err, decoded) => {
+    jwt.verify(token,'user session key', (err, decoded) => {
 
-if (err) return res.sendStatus(403) // invalid token
-res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
-next()
+        if (err) return res.sendStatus(403) // invalid token
+        res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
+        next()
 
-      }
+        }
     )
 }
-
-

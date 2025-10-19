@@ -15,7 +15,7 @@ const messages = require('./messages');
 // AUTHORIZATIONS //
 
 // Create new user POST request
-router.post('/newuser', auth.new_user); // need to adjust this
+router.post('/newUser', auth.newUser); 
 
 // Login POST request
 router.post('/login', auth.login);

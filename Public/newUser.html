@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New User</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+
+      header {
+        background-color: #0072c6;
+        color: white;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f6f8;
+        color: #333;
+      }
+
+      nav a {
+        color: white;
+        margin-left: 1rem;
+        text-decoration: none;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 2rem auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .step { display: none; }
+      .step.active { display: block; }
+      .form-group { margin-bottom: 15px; }
+      label { display: block; margin-bottom: 5px; }
+      input { padding: 8px; width: 100%; box-sizing: border-box; }
+      button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #3498db;
+        color: white;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 20px;
+        }
+
+      h2 {
+        text-align: center;
+        color: #2c3e50;
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+        margin-top: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <h1>Visionary</h1>
+      </div>
+      <nav>
+        <a href="login.html">Return to Login</a>
+      </nav>
+    </header>
+
+    <body>
+      <div class="container">
+        
+        <form id="CreateUserForm">
+          
+            <!-- 1. User info -->
+            <div class="step active" id="step1">
+              <h2>Enter Information</h2>
+                <div class = "form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" id="firstName" name="firstName"/>
+                </div>
+
+                <div class = "form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" id="lastName" name="lastName"/>
+                </div>
+
+                <div class = "form-group">
+                  <label for="gender">Gender</label>
+                  <input type="text" id="gender" name="gender"/>
+                </div>
+                
+                <div class = "form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" name="email"/>
+                </div>
+
+                <div class = "form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone"/>
+                </div>
+
+                <div class = "form-group">
+                  <label for="dob">Date of Birth</label>
+                  <input type="text" id="dob" name="dob" />
+                </div>
+
+                <div class = "form-group">
+                  <label for="address">Address</label>
+                  <input type="text" id="address" name="address" />
+                </div>
+
+                 <button type="button" onclick="nextStep()">Next</button>
+
+            </div>
+
+            <!-- 2. Username, Password -->
+            <div class="step" id="step2">
+                <div class="form-group">
+                  <label for="username">Username:</label>
+                  <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password:</label>
+                  <input type="password" id="password" name="password" required>
+                </div>
+        
+                <button type="button" onclick="prevStep()">Back</button> <!-- this needs to be a different style -->
+                <button type="submit">Create Account</button>
+
+            </div>
+        </form>
+
+        <!-- Link to newUser logic -->
+        <script src="/js/newUser.js"></script>
+        <footer>&copy; 2025 Visionary Health App - Database management project</footer>
+
+    </body>
+</html>
