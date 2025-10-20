@@ -20,8 +20,6 @@ router.post('/newUser', auth.newUser);
 // Login POST request
 router.post('/login', auth.login);
 
-// DASHBOARD //
-
 // Profile GET request
 router.get('/profile', auth.verify, profileSection.getProfile);
 
