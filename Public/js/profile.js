@@ -3,24 +3,29 @@ window.onload = async function () // loads this function when the page is loaded
 
 const token = localStorage.getItem('token'); // get the token from local storage
 
-if (!token) { // if no token found, redirect to login page
+// if no token found, redirect to login page
+if (!token) { 
     alert("Please log in first.");
     window.location.href = "/login.html";
     return;
 }
 
-try // try to fetch profile data
+// try to fetch profile data
+try 
 {
-    const res = await fetch('/api/profile', { // fetch profile data from the server
+    // fetch profile data from the server
+    const res = await fetch('/api/profile', { 
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'authorization': 'Bearer ' + token }
     });
 
-    const data = await res.json(); // parse the JSON response
-
-    if (!res.ok) // if response is not ok, show error message
+    // parse the JSON response
+    const data = await res.json();
+    
+    // if response is not ok, show error message
+    if (!res.ok) 
     {
         this.alert(data.error || "Failed to fetch profile data.");
         return;
