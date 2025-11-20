@@ -1,7 +1,10 @@
-window.onload = async function () // loads this function when the page is loaded
-{
+//profile.js
 
-const token = localStorage.getItem('token'); // get the token from local storage
+// loads this function when the page is loaded
+window.onload = async function () 
+{
+// get the token from local storage
+const token = localStorage.getItem('token'); 
 
 // if no token found, redirect to login page
 if (!token) { 
@@ -9,6 +12,14 @@ if (!token) {
     window.location.href = "/login.html";
     return;
 }
+
+//fetch prpofile data
+getProfile(token);
+
+}
+
+// function to fetch profile data from the server
+async function getProfile(token) {
 
 // try to fetch profile data
 try 
@@ -23,7 +34,7 @@ try
 
     // parse the JSON response
     const data = await res.json();
-    
+
     // if response is not ok, show error message
     if (!res.ok) 
     {
@@ -44,4 +55,9 @@ catch (err) // catch any errors during fetch
     console.error("Error fetching profile data:", err);
 }
 
+}
+
+// submit updated profile data
+async function updateProfile(token) {
+    
 }
