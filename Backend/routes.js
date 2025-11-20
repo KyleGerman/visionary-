@@ -22,6 +22,7 @@ router.post('/login', auth.login);
 
 // Profile GET request
 router.get('/profile', auth.verify, profileSection.getProfile);
+router.put('/profile', auth.verify, profileSection.updateProfile);
 
 // Dashboard: get and update dashboard-specific user info
 router.get('/dashboard', auth.verify, profileSection.getDashboard);

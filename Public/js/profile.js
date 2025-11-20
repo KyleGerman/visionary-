@@ -16,6 +16,13 @@ if (!token) {
 //fetch prpofile data
 getProfile(token);
 
+const form = document.getElementById("profileForm");
+
+form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        updateProfile(token); 
+    });
+
 }
 
 // function to fetch profile data from the server
@@ -50,7 +57,8 @@ try
     document.getElementById("address").value = data.address || "";
 }
 
-catch (err) // catch any errors during fetch
+// catch any errors during fetch
+catch (err) 
 {
     console.error("Error fetching profile data:", err);
 }
@@ -60,4 +68,43 @@ catch (err) // catch any errors during fetch
 // submit updated profile data
 async function updateProfile(token) {
     
+    // split full name into first/last
+    const fullName = document.getElementById("fullName").value.trim().split(" ");
+    const first = fullName[0];
+    const last = fullName.slice(1).join(" ");
+
+    // update data object
+    const updatedData = {
+        first_name: first,
+        last_name: last,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        birth_date: document.getElementById("dob").value,
+        address: document.getElementById("address").value
+    };
+
+    // try to send updated data to server
+    try {
+    
+        const res = await fetch('/api/profile', { 
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': 'Bearer ' + token },
+
+        body: JSON.stringify(updatedData)
+    });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            this.alert(data.error || "Failed to update profile.");
+            return;
+        }
+    }
+    catch (err) {
+        console.error("Error updating profile data:", err);
+    }
+    
+    window.location.reload()
 }

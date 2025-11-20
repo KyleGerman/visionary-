@@ -1,31 +1,61 @@
 const db = require('./connect_db');
 const auth = require('./auth')
 
-exports.getProfile = (req, res) => { // function to get user profile data
+// function to get user profile data
+exports.getProfile = (req, res) => {
 
-    const userId = res.user_id; // get user ID from the authenticated request
+    // get user ID from the authenticated request
+    const userId = res.user_id; 
 
     const query = 'SELECT first_name, last_name, email, phone, birth_date, address FROM users WHERE user_id = ?';
 
-    db.query(query, [userId], (err, results) => // execute the database query
-{
+    // execute the database query
+    db.query(query, [userId], (err, results) => {
 
-        if (err) // handle any database errors
+        // handle any database errors
+        if (err)
         {
             console.error("Database query error:", err);
             return res.status(500).json({ error: 'Internal server error' });
         }
 
-        if (results.length === 0) // if no user found
-        {
+        // if no user found
+        if (results.length === 0) {
             return res.status(404);
         }
 
-        res.json(results[0]); // send the user profile data as JSON response
+        // send the user profile data as JSON response
+        res.json(results[0]);
 });
 };
 
+// function to update user profile data
+exports.updateProfile = (req, res) => {
 
+    // get user ID from the authenticated request
+    const userId = res.user_id;
+
+    // from profile.js updateProfile function
+    const { first_name, last_name, email, phone, birth_date, address } = req.body;
+    
+    const query = `UPDATE users 
+                   SET first_name = ?, last_name = ?, email = ?, phone = ?, birth_date = ?, address = ? 
+                   WHERE user_id = ?`;
+    
+    db.query(query, [first_name, last_name, email, phone, birth_date, address, userId], (err, result) => {
+        
+        // handle any database errors
+        if (err)
+        {
+            console.error("Database query error:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+});
+
+    // respond with success so the client can refresh its view
+    return res.json({ success: true });
+
+};
 
     // get dashboard data (name, contact, health summary)
     exports.getDashboard = (req, res) => {
