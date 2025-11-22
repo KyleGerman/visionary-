@@ -1,20 +1,37 @@
-window.addEventListener('DOMContentLoaded', async () => {
-  const token = localStorage.getItem('token');
-  if (!token) return; // if not logged in, nothing to do (page is static)
+//dashboard.js MAIN PAGE
 
-  try {
+window.addEventListener('DOMContentLoaded', async () => {
+
+  const token = localStorage.getItem('token');
+
+  // if not logged in, nothing to do (page is static)
+  if (!token) return; 
+
+  // load dashboard data
+  await namePage(token);
+
+
+});
+
+async function namePage (token) {
+    try {
     const res = await fetch('/api/dashboard', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', 'authorization': 'Bearer ' + token }
     });
 
-    if (!res.ok) return;
+    if (!res.ok) {
+      return;
+    }
+
     const data = await res.json();
 
     const name = (data.first_name || '') + (data.last_name ? ' ' + data.last_name : '');
     document.getElementById('welcomeName').textContent = name || 'User';
     document.getElementById('editName').value = name || '';
-  } catch (err) {
+  }
+
+  catch (err) {
     console.error('Failed to load dashboard data', err);
   }
 
@@ -23,13 +40,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     const [first_name, ...rest] = fullName.split(' ');
     const last_name = rest.join(' ');
 
+    // health fields moved to /health.html
     const payload = {
       first_name: first_name || '',
       last_name: last_name || '',
       email: undefined,
       phone: undefined,
       address: undefined,
-      // health fields moved to /health.html
+      
     };
 
     try {
@@ -53,4 +71,4 @@ window.addEventListener('DOMContentLoaded', async () => {
       alert('Network error');
     }
   });
-});
+}
