@@ -32,8 +32,12 @@ window.addEventListener('DOMContentLoaded', async () => {
     const scheduled_for = document.getElementById('scheduled_for').value;
     const reason = document.getElementById('reason').value;
     const notes = document.getElementById('notes').value;
+
+    // random provider for test
+    const provider_id = Math.floor(Math.random() * 20) + 1; 
+
     try {
-      const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json', authorization: 'Bearer ' + token }, body: JSON.stringify({ scheduled_for, reason, notes }) });
+      const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json', authorization: 'Bearer ' + token }, body: JSON.stringify({ scheduled_for, reason, notes, provider_id }) });
       if (!res.ok) { alert('Failed to request appointment'); return; }
       alert('Appointment requested');
       load();

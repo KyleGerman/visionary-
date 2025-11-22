@@ -10,6 +10,7 @@ const auth = require('./auth');
 const profileSection = require('./profile');
 const appointments = require('./appointments');
 const messages = require('./messages');
+const actualDashboard = require('./dashboard');
 
 
 // AUTHORIZATIONS //
@@ -23,6 +24,9 @@ router.post('/login', auth.login);
 // Profile GET request
 router.get('/profile', auth.verify, profileSection.getProfile);
 router.put('/profile', auth.verify, profileSection.updateProfile);
+
+// Update Appointment Status on Dashboard
+router.get('/appointmentData', auth.verify, actualDashboard.getDashboardData);
 
 // Dashboard: get and update dashboard-specific user info
 router.get('/dashboard', auth.verify, profileSection.getDashboard);

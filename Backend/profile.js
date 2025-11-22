@@ -1,5 +1,4 @@
 const db = require('./connect_db');
-const auth = require('./auth');
 
 // function to get user profile data
 exports.getProfile = (req, res) => {

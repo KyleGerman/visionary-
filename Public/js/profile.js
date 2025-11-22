@@ -43,8 +43,7 @@ try
     const data = await res.json();
 
     // if response is not ok, show error message
-    if (!res.ok) 
-    {
+    if (!res.ok) {
         this.alert(data.error || "Failed to fetch profile data.");
         return;
     }

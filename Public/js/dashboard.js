@@ -9,10 +9,11 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // load dashboard data
   await namePage(token);
-
+  await updateAppointments(token);
 
 });
 
+// load name and setup save button ?
 async function namePage (token) {
     try {
     const res = await fetch('/api/dashboard', {
@@ -71,4 +72,51 @@ async function namePage (token) {
       alert('Network error');
     }
   });
+}
+
+// update appointment grid
+async function updateAppointments(token) {
+
+  try {
+    
+    const res = await fetch('/api/appointmentData', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + token }
+    });
+
+    const data = await res.json();
+
+    // if response is not ok, show error message
+    if (!res.ok) {
+        this.alert(data.error || "Failed to fetch profile data.");
+        return;
+    }
+
+    //populate appointment grid
+    const theList = document.getElementById("appointmentList");
+    theList.innerHTML = ""; 
+
+    // add each appointment to the list
+    data.forEach ( a => {
+    const li = document.createElement('li');
+    li.textContent = `${formatDate(a.scheduled_for)} - ${a.reason} with Dr. ${a.provider_last}`;
+    theList.appendChild(li);
+    });
+    
+    // helper to format dates
+    function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString('en-US', { 
+    month: 'short', day: 'numeric', year: 'numeric'
+  });
+    }
+
+    }
+
+  // catch any errors during fetch
+  catch (err) {
+      console.error("Error fetching profile data:", err);
+  }
+
 }
