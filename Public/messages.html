@@ -4,40 +4,49 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Visionary Health App - Messages</title>
-    <link rel="stylesheet" href="styles.css" />
+
     <style>
+      /* ---------- Global Style ---------- */
       body {
         font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
-        padding: 0;
-        background-color: #f4f6f8;
-        color: #333;
+        background: #eef3f8;
+        color: #2d2d2d;
       }
 
+      /* ---------- Header ---------- */
       header {
-        background-color: #0072c6;
-        color: white;
+        background: linear-gradient(90deg, #0064b5, #0091d9);
         padding: 1rem 2rem;
+        color: white;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
       }
 
       nav a {
         color: white;
-        margin-left: 1rem;
+        margin-left: 1.4rem;
         text-decoration: none;
         font-weight: 500;
+        transition: opacity 0.2s;
       }
 
       nav a:hover {
-        text-decoration: underline;
+        opacity: 0.8;
       }
 
+      /* ---------- Layout ---------- */
       .container {
         padding: 2rem;
-        max-width: 900px;
+        max-width: 950px;
         margin: auto;
+      }
+
+      h2 {
+        margin-bottom: 1.2rem;
+        color: #004c7d;
       }
 
       .message-list {
@@ -46,38 +55,97 @@
         gap: 1rem;
       }
 
+      /* ---------- Card Style ---------- */
       .card {
         background: white;
-        padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-        transition: box-shadow 0.3s ease;
+        padding: 1.6rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
       }
 
       .card:hover {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #0072c6;
       }
 
       .card p {
-        margin: 0.5rem 0;
-        line-height: 1.5;
+        margin: 0.4rem 0;
+        line-height: 1.6;
       }
 
       .card small {
-        color: #666;
-        font-size: 0.85rem;
+        color: #777;
       }
 
+      /* ---------- Form Styling ---------- */
+      form label {
+        display: block;
+        font-weight: 600;
+        margin: 0.7rem 0 0.2rem;
+        color: #555;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid #c9d3df;
+        background: #f8fbff;
+        font-size: 15px;
+        transition: border-color 0.2s;
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #0072c6;
+        background: #ffffff;
+      }
+
+      textarea {
+        height: 110px;
+        resize: vertical;
+      }
+
+      button {
+        background: #0072c6;
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        margin-top: 10px;
+        border-radius: 10px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+      }
+
+      button:hover {
+        background: #005fa3;
+        transform: translateY(-2px);
+      }
+
+      /* ---------- Footer ---------- */
       footer {
         text-align: center;
-        padding: 1rem;
+        padding: 1.5rem;
+        color: #777;
         font-size: 0.9rem;
-        color: #666;
         margin-top: 2rem;
       }
     </style>
   </head>
+
   <body>
+    <!-- ---------- Header ---------- -->
     <header>
       <div class="logo">
         <h1>Visionary</h1>
@@ -92,27 +160,35 @@
       </nav>
     </header>
 
+    <!-- ---------- Main Container ---------- -->
     <div class="container">
       <h2>Your Messages</h2>
+
       <section id="messageList" class="message-list">
         Loading messages...
       </section>
 
-      <section class="card" style="margin-top: 1rem">
+      <!-- Send Message Card -->
+      <section class="card" style="margin-top: 1.5rem">
         <h3>Send Message</h3>
         <form id="sendForm">
-          <label for="recipient">Recipient (user_id)</label>
-          <input id="recipient" type="number" required />
+          <label for="recipient">Recipient Username</label>
+          <input id="recipient" type="text" required placeholder="Enter username" />
+
+
           <label for="subject">Subject</label>
           <input id="subject" type="text" />
+
           <label for="body">Message</label>
           <textarea id="body" required></textarea>
-          <div style="margin-top: 8px"><button type="submit">Send</button></div>
+
+          <button type="submit">Send</button>
         </form>
       </section>
     </div>
 
-    <footer style="text-align: center; padding: 1rem; color: #666">
+    <!-- ---------- Footer ---------- -->
+    <footer>
       &copy; 2025 database management project
     </footer>
 
