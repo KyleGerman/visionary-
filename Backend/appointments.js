@@ -4,7 +4,8 @@ const db = require('./connect_db');
 exports.getAppointments = (req, res) => {
   const userId = res.user_id;
   // we need patient_id from patients table
-  const q = `SELECT a.* FROM appointments a
+  // Format scheduled_for as a string to avoid timezone conversion
+  const q = `SELECT a.appointment_id, a.patient_id, a.provider_id, a.created_at, DATE_FORMAT(a.scheduled_for, '%Y-%m-%d %H:%i:%s') as scheduled_for, a.reason, a.notes, a.status FROM appointments a
              JOIN patients p ON p.patient_id = a.patient_id
              WHERE p.user_id = ? ORDER BY a.scheduled_for ASC`;
 
@@ -27,6 +28,7 @@ exports.createAppointment = (req, res) => {
     if (!rows.length) return res.status(400).json({ error: 'Patient record not found' });
 
     const patient_id = rows[0].patient_id;
+    // scheduled_for is in format "2025-11-27 09:45:00" (local time, no timezone)
     const q = `INSERT INTO appointments (patient_id, provider_id, created_at, scheduled_for, reason, notes, status) VALUES (?, ?, NOW(), ?, ?, ?, 'scheduled')`;
     db.query(q, [patient_id, provider_id || 1, scheduled_for, reason || '', notes || ''], (err, result) => {
       if (err) {

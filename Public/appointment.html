@@ -31,6 +31,15 @@
     <section class="card">
       <h2>Appointments</h2>
       <p>Manage your upcoming and past appointments here.</p>
+      <div style="margin-top:8px">
+        <button id="calButton" type="button">Calendar View</button>
+      </div>
+      <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
+    </section>
+
+    <section id="calContainer" class="card" style="display:none;">
+      <h3>Calendar</h3>
+      <div id="calendar"></div>
     </section>
 
     <section class="card">
@@ -71,4 +80,4 @@
   <title>Visionary Health App</title>
 
   <link rel="stylesheet" href="styles.css" />
-x
+

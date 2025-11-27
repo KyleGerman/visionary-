@@ -105,5 +105,5 @@ async function updateProfile(token) {
         console.error("Error updating profile data:", err);
     }
     
-    window.location.reload()
+    window.location.reload();
 }
