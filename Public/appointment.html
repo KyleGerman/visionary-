@@ -63,7 +63,43 @@
       <div id="pastList">Loading...</div>
     </section>
   </main>
+  
+<div id="eventModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalDescription"></p>
+    <p><strong>Start:</strong> <span id="modalStart"></span></p>
+    <p><strong>End:</strong> <span id="modalEnd"></span></p>
+  </div>
+</div>
 
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+  }
+  .modal-content {
+    background: white;
+    padding: 20px;
+    width: 320px;
+    margin: 120px auto;
+    border-radius: 10px;
+    position: relative;
+  }
+  #closeModal {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+  }
+</style>
   <footer style="text-align:center; padding:1rem; color:#666">&copy; 2025 database management project</footer>
 
   <script src="/js/appointments.js"></script>

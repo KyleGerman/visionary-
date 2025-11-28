@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         div.className = 'appt-card';
         div.innerHTML = `<strong>${new Date(a.scheduled_for).toLocaleString()}</strong> - ${a.reason}<br/><small>Status: ${a.status}</small> <button data-id="${a.appointment_id}" class="cancel">Cancel</button>`;
         upcoming.appendChild(div);
-        
+
       });
 
       document.querySelectorAll('.cancel').forEach(btn => btn.addEventListener('click', async (e) => {
@@ -67,6 +67,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     function updateCalendar(rows) {
+
     const events = rows.map(a => {
       // scheduled_for now comes as a plain string: "2025-11-26 23:48:00"
       // Convert to ISO format for Date parsing (add T instead of space)
@@ -76,12 +77,22 @@ window.addEventListener('DOMContentLoaded', async () => {
       // 30 minutes duration for appointments, change this?
       const end = new Date(start.getTime() + 30 * 60 * 1000); 
       
+      if (a.status === 'completed') {
+        return {
+        title: a.reason || "Appointment",
+        start: start,
+        end: end,
+        color: 'red',
+        extendedProps: { status: a.status, notes: a.notes }
+        }
+      }
+      else {
       return {
         title: a.reason || "Appointment",
         start: start,
         end: end,
         extendedProps: { status: a.status, notes: a.notes }
-      };
+      };}
     });
 
     // Initialize or update calendar
@@ -90,7 +101,28 @@ window.addEventListener('DOMContentLoaded', async () => {
       calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
-        events
+        events,
+
+        eventClick: function(info) {
+        info.jsEvent.preventDefault();
+
+        // Fill modal fields
+        document.getElementById('modalTitle').textContent = info.event.title;
+
+        if (info.event.extendedProps.notes === "") {
+          document.getElementById('modalDescription').textContent = "No notes provided.";
+        } else {
+          document.getElementById('modalDescription').textContent = info.event.extendedProps.notes;
+        }
+
+        document.getElementById('modalStart').textContent =
+          info.event.start.toLocaleString();
+        document.getElementById('modalEnd').textContent =
+          info.event.end ? info.event.end.toLocaleString() : "—";
+
+        // Show modal
+        document.getElementById('eventModal').style.display = 'block';
+  }
       });
 
       calendar.render();
@@ -140,5 +172,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     } catch (err) { console.error(err); alert('Network error'); }
   });
 
+  /*
+  This must be at the end otherwise it breaks. Closes the modal aka popup when clicking outside or on the X
+  thank you w3schools
+
+  Top: if user clicks the X button, close the modal
+  
+  Bottom: if user clicks outside the modal, close it
+  */
+  document.getElementById('closeModal').onclick = function () {
+    document.getElementById('eventModal').style.display = 'none';
+  };
+  window.onclick = function (e) {
+    if (e.target === document.getElementById('eventModal')) {
+      document.getElementById('eventModal').style.display = 'none';
+    }
+  }
+
+  // load
   load();
+
 });
