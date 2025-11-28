@@ -32,10 +32,17 @@ window.addEventListener('DOMContentLoaded', async () => {
       upcoming.innerHTML = '';
 
       rows.forEach(a => {
+
+        // does not put completed appointments in the list
+        if (a.status == 'completed') {
+          return;
+        }
+
         const div = document.createElement('div');
         div.className = 'appt-card';
         div.innerHTML = `<strong>${new Date(a.scheduled_for).toLocaleString()}</strong> - ${a.reason}<br/><small>Status: ${a.status}</small> <button data-id="${a.appointment_id}" class="cancel">Cancel</button>`;
         upcoming.appendChild(div);
+        
       });
 
       document.querySelectorAll('.cancel').forEach(btn => btn.addEventListener('click', async (e) => {

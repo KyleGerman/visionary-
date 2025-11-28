@@ -1,7 +1,23 @@
 const db = require('./connect_db');
 
+// Update past appointments to "completed" status
+const markPastAppointmentsCompleted = () => {
+  const updateQ = `UPDATE appointments SET status = 'completed' 
+                   WHERE status IN ('scheduled', 'in-progress') 
+                   AND scheduled_for < NOW()`;
+  
+  db.query(updateQ, (err) => {
+    if (err) {
+      console.error('Error updating past appointments:', err);
+    }
+  });
+};
+
 // get appointments for the dashboard
 exports.getDashboardData = (req, res) => {
+
+    // Mark past appointments as completed before fetching
+    markPastAppointmentsCompleted();
 
     // get user ID from the authenticated request
     const userId = res.user_id;
@@ -18,7 +34,7 @@ exports.getDashboardData = (req, res) => {
                 JOIN patients pt ON a.patient_id = pt.patient_id
                 JOIN providers pr ON a.provider_id = pr.provider_id
                 JOIN users u ON pr.user_id = u.user_id
-                WHERE pt.user_id = ?
+                WHERE pt.user_id = ? AND a.status IN ('scheduled', 'in-progress')
                 ORDER BY a.scheduled_for ASC
                 LIMIT 5;`;
 

@@ -1,13 +1,31 @@
 const db = require('./connect_db');
 
+// Update past appointments to "completed" status
+const markPastAppointmentsCompleted = () => {
+  const updateQ = `UPDATE appointments SET status = 'completed' 
+                   WHERE status IN ('scheduled', 'in-progress') 
+                   AND scheduled_for < NOW()`;
+  
+  db.query(updateQ, (err) => {
+    if (err) {
+      console.error('Error updating past appointments:', err);
+    }
+  });
+};
+
 // get appointments for current user (patient)
 exports.getAppointments = (req, res) => {
   const userId = res.user_id;
+  
+  // Mark past appointments as completed before fetching
+  markPastAppointmentsCompleted();
+  
   // we need patient_id from patients table
   // Format scheduled_for as a string to avoid timezone conversion
   const q = `SELECT a.appointment_id, a.patient_id, a.provider_id, a.created_at, DATE_FORMAT(a.scheduled_for, '%Y-%m-%d %H:%i:%s') as scheduled_for, a.reason, a.notes, a.status FROM appointments a
              JOIN patients p ON p.patient_id = a.patient_id
-             WHERE p.user_id = ? ORDER BY a.scheduled_for ASC`;
+             WHERE p.user_id = ?
+             ORDER BY a.scheduled_for ASC`;
 
   db.query(q, [userId], (err, rows) => {
     if (err) {
