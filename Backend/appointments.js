@@ -91,3 +91,33 @@ exports.deleteAppointment = (req, res) => {
     });
   });
 };
+
+exports.showPast = (req, res) => {
+
+  const userId = res.user_id;
+  const limit = req.params.limit ? parseInt(req.params.limit) : 3;
+
+  markPastAppointmentsCompleted();
+
+  let query = 
+        `SELECT a.appointment_id, a.patient_id, a.provider_id, a.created_at, DATE_FORMAT(a.scheduled_for, '%Y-%m-%d %H:%i:%s') 
+        as scheduled_for, a.reason, a.notes, a.status FROM appointments a
+             JOIN patients p ON p.patient_id = a.patient_id
+             WHERE p.user_id = ? AND a.status IN ('completed')
+             ORDER BY a.scheduled_for DESC`;
+  
+  if (limit > 0) {
+    query += ` LIMIT ${limit}`;
+  }
+  
+  db.query(query,[userId], (err,results) => {
+    
+    // handle any database errors
+    if (err) {
+        console.error("Database query error:", err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      res.json(results);
+  });
+}

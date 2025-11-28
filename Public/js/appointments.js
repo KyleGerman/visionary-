@@ -1,6 +1,5 @@
 // appointments.js
 // Loads, creates, deletes, and calendar view
-
 window.addEventListener('DOMContentLoaded', async () => {
 
   const token = localStorage.getItem('token');
@@ -8,9 +7,55 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (!token) return;
 
   const upcoming = document.getElementById('upcomingList');
+  const pastList = document.getElementById('pastList');
+
+  const showAllBtn = document.getElementById('showAllBtn');
   const calButton = document.getElementById('calButton');
   const calContainer = document.getElementById('calContainer');
   let calendar;
+  
+  let showingAllPast = false;
+
+  async function loadPastAppointments(showAll = false) {
+    try {
+      const limit = showAll ? 999 : 3;
+      const res = await fetch(`/api/appointments/past/${limit}`, { headers: { authorization: 'Bearer ' + token } });
+
+      if (!res.ok) {
+        pastList.innerHTML = 'Failed to load';
+        return;
+      }
+
+      const rows = await res.json();
+
+      if (!rows.length) {
+        pastList.innerHTML = '<p>No past appointments</p>';
+        showAllBtn.style.display = 'none';
+        return;
+      }
+
+      pastList.innerHTML = '';
+
+      rows.forEach(a => {
+        const div = document.createElement('div');
+        div.className = 'appt-card';
+        div.innerHTML = `<strong>${new Date(a.scheduled_for).toLocaleString()}</strong> - ${a.reason}<br/><small>Status: ${a.status}</small>`;
+        pastList.appendChild(div);
+      });
+
+      // Show "Show All" button only if there are more than 3 past appointments
+      if (!showAll && rows.length >= 3) {
+        showAllBtn.style.display = 'block';
+      } else {
+        showAllBtn.style.display = 'none';
+      }
+
+      showingAllPast = showAll;
+    } catch (err) {
+      console.error(err);
+      pastList.innerHTML = 'Network error';
+    }
+  }
 
   async function load() {
 
@@ -97,7 +142,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize or update calendar
     if (!calendar) {
+
       const calendarEl = document.getElementById('calendar');
+
       calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         height: 'auto',
@@ -126,8 +173,8 @@ window.addEventListener('DOMContentLoaded', async () => {
       });
 
       calendar.render();
-    } 
-    else {
+
+    } else {
       calendar.removeAllEvents();
       events.forEach(ev => calendar.addEvent(ev));
     }
@@ -169,7 +216,19 @@ window.addEventListener('DOMContentLoaded', async () => {
       if (!res.ok) { alert('Failed to request appointment'); return; }
       alert('Appointment requested');
       load();
+      loadPastAppointments();
     } catch (err) { console.error(err); alert('Network error'); }
+  });
+
+  // Show All button listener
+  showAllBtn?.addEventListener('click', async () => {
+    await loadPastAppointments(true);
+    showAllBtn.textContent = 'Hide Past Appointments';
+    showAllBtn.onclick = async () => {
+      await loadPastAppointments(false);
+      showAllBtn.textContent = 'Show All Past Appointments';
+      showAllBtn.onclick = null;
+    };
   });
 
   /*
@@ -191,5 +250,6 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // load
   load();
+  loadPastAppointments();
 
 });
