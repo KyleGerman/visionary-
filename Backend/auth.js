@@ -14,9 +14,7 @@ exports.newUser = async (req, res) => {
             return res.status(500).json({ error: 'Internal server error' });
         }
         
-        // results.insertId contains the auto-generated user_id
         const newUserId = results.insertId;
-
         const login_create = 'INSERT INTO logins (user_id, username, password) VALUES (?, ?, ?)';
 
         db.query(login_create, [newUserId, username, password], (err2) => {
@@ -26,12 +24,12 @@ exports.newUser = async (req, res) => {
             }
 
             const token = jwt.sign(
-            { id: newUserId, username: username }, 
-            'user session key', 
-            { expiresIn: '1h' });
+                { id: newUserId, username: username }, 
+                'user session key', 
+                { expiresIn: '1h' }
+            );
 
             res.json({ token });
-        
         });
     });
 };
@@ -49,30 +47,32 @@ exports.login = async (req, res, next) => {
         if (password != user.password) return res.status(401).json({ error: 'Wrong password' });
 
         const token = jwt.sign(
-        { id: user.user_id, username: user.username }, 
-        'user session key', 
-        { expiresIn: '1h' });
+            { id: user.user_id, username: user.username }, 
+            'user session key', 
+            { expiresIn: '1h' }
+        );
 
         res.json({ token });
-
     });
 };
 
 // reads JWT, verifies, and gets user_id
 exports.verify = async (req, res, next) => {
-
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.sendStatus(401);
-    console.log(authHeader); // Bearer token
+    
+    console.log('[AUTH] Authorization header:', authHeader);
 
-    const token = authHeader.split(' ')[1]; // splits 'Bearer' and 'token'
+    const token = authHeader.split(' ')[1];
 
-    jwt.verify(token,'user session key', (err, decoded) => {
-
-        if (err) return res.sendStatus(403) // invalid token
-        res.user_id = decoded.id; // user_id sent as 'user_id' to next function;
-        next()
-
+    jwt.verify(token, 'user session key', (err, decoded) => {
+        if (err) {
+            console.log('[AUTH] Token verification failed:', err);
+            return res.sendStatus(403);
         }
-    )
-}
+        
+        req.user_id = decoded.id; // ✅ FIXED: req instead of res
+        console.log('[AUTH] User verified, user_id:', req.user_id);
+        next();
+    });
+};

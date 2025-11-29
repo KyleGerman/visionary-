@@ -1,45 +1,60 @@
 const db = require('./connect_db');
 
-// get messages for current user (recipient)
 exports.getMessages = (req, res) => {
-  const userId = res.user_id;
-  const q = `SELECT m.message_id, m.sender_id, m.recipient_id, m.subject, m.body, m.created_at, m.is_read, u.first_name, u.last_name
-             FROM messages m
-             LEFT JOIN users u ON u.user_id = m.sender_id
-             WHERE m.recipient_id = ? ORDER BY m.created_at DESC`;
+  const userId = req.user_id; // ✅ FIXED: req instead of res
+  
+  console.log('[MESSAGES] Getting messages for user:', userId);
+  
+  const q = `SELECT * FROM messages WHERE sender_id = ? OR recipient_id = ? ORDER BY created_at DESC`;
 
-  db.query(q, [userId], (err, rows) => {
+  db.query(q, [userId, userId], (err, rows) => {
     if (err) {
-      console.error('Error fetching messages:', err);
-      return res.status(500).json({ error: 'Failed to fetch messages' });
+      console.error('[MESSAGES] Database error:', err);
+      return res.status(500).json({ error: 'Database error', details: err.message });
     }
+    console.log('[MESSAGES] Found messages:', rows.length);
+    console.log('[MESSAGES] Sending data:', rows);
     res.json(rows);
   });
 };
 
-// send a message (sender is current user)
 exports.sendMessage = (req, res) => {
-  const senderId = res.user_id;
+  const senderId = req.user_id; // ✅ FIXED: req instead of res
   const { recipient_id, subject, body } = req.body;
-  if (!recipient_id || !body) return res.status(400).json({ error: 'recipient_id and body required' });
+  
+  console.log('[MESSAGES] Send message request:', { senderId, recipient_id, subject, body });
+  
+  if (!recipient_id || !body) {
+    return res.status(400).json({ error: 'recipient_id and body required' });
+  }
 
   const q = `INSERT INTO messages (sender_id, recipient_id, subject, body, created_at, is_read) VALUES (?, ?, ?, ?, NOW(), 0)`;
+  
   db.query(q, [senderId, recipient_id, subject || '', body], (err, result) => {
     if (err) {
-      console.error('Error sending message:', err);
-      return res.status(500).json({ error: 'Failed to send message' });
+      console.error('[MESSAGES] Error sending message:', err);
+      return res.status(500).json({ error: 'Failed to send message', details: err.message });
     }
+    console.log('[MESSAGES] Message sent, ID:', result.insertId);
     res.json({ success: true, message_id: result.insertId });
   });
 };
 
 exports.markRead = (req, res) => {
-  const userId = res.user_id;
+  const userId = req.user_id; // ✅ FIXED: req instead of res
   const messageId = req.params.id;
+  
   const q = `UPDATE messages SET is_read = 1 WHERE message_id = ? AND recipient_id = ?`;
+  
   db.query(q, [messageId, userId], (err, result) => {
-    if (err) return res.status(500).json({ error: 'Failed to mark read' });
-    if (result.affectedRows === 0) return res.status(404).json({ error: 'Message not found' });
+    if (err) {
+      console.error('[MESSAGES] Error marking read:', err);
+      return res.status(500).json({ error: 'Failed to mark read' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+    console.log('[MESSAGES] Marked message as read:', messageId);
     res.json({ success: true });
   });
 };
