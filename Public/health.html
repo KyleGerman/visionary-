@@ -1,108 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Visionary Health - Health</title>
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-      body {
-        font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
-        background: #f4f6f8;
-        margin: 0;
-      }
-      header {
-        background: #0072c6;
-        color: #fff;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      nav a {
-        color: #fff;
-        margin-left: 1rem;
-        text-decoration: none;
-      }
-      .container {
-        max-width: 900px;
-        margin: 2rem auto;
-        padding: 1rem;
-      }
-      .card {
-        background: #fff;
-        padding: 1.25rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      }
-      label {
-        display: block;
-        margin-top: 8px;
-        font-weight: 600;
-      }
-      textarea,
-      input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 6px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      button {
-        margin-top: 10px;
-        padding: 10px 14px;
-        background: #3498db;
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="logo"><h1 style="margin: 0">Visionary</h1></div>
-      <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="appointment.html">Appointments</a>
-        <a href="messages.html">Messages</a>
-        <a href="profile.html">Profile</a>
-        <a href="health.html">Health</a>
-        <a href="login.html">Log Out</a>
-      </nav>
-    </header>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visionary Health - Health</title>
+  <style>
+    body {
+      font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 1.25rem;
+    }
 
-    <main class="container">
-      <div class="card">
-        <h2>Your Health</h2>
-        <p>
-          Edit your conditions (medical history) and medications below. Click
-          Save to persist to your account.
-        </p>
-        <form id="healthForm">
-          <label for="medHistory">Conditions / Medical History</label>
-          <textarea
-            id="medHistory"
-            rows="8"
-            placeholder="E.g. Hypertension, Asthma..."
-          ></textarea>
+    header {
+      background: #0072c6;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-          <label for="meds">Medications</label>
-          <input
-            id="meds"
-            type="text"
-            placeholder="E.g. Lisinopril, Albuterol"
-          />
+    nav a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
 
-          <button type="submit">Save Health Info</button>
-        </form>
-      </div>
-    </main>
+    .container { 
+      padding:2rem; 
+      max-width:1000px; 
+      margin:auto 
+    }
 
-    <footer style="text-align: center; padding: 1rem; color: #666">
-      &copy; 2025 Visionary Health App
-    </footer>
+    .card {
+      background: #fff;
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      margin-bottom: 1.25rem;
+    }
 
-    <script src="/js/health.js"></script>
-  </body>
+    .page-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 1.5rem 0;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    #medHistCont {
+      white-space: pre-wrap;
+      line-height: 1.5;
+      margin-top: 0.625rem;
+    }
+
+    #prescriptList {
+      margin-top: 0.625rem;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #drugInfoBackdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    
+    #drugInfo {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 10px;
+      max-width: 50rem;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);  
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo"><h1 style="margin: 0">Visionary</h1></div>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="appointment.html">Appointments</a>
+      <a href="messages.html">Messages</a>
+      <a href="profile.html">Profile</a>
+      <a href="health.html">Health</a>
+      <a href="login.html">Log Out</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>Health</h2>
+
+    <section class="card">
+      <h3>Medical History</h3>
+      <hr />
+      <div id="medHistCont"></div>
+      <br>
+    </section>
+
+    <section class="card">
+      <h3>Current Prescriptions</h3>
+      <i>Click on a medication to find out more</i>
+      <br><br>
+      <div id="prescriptList"></div>
+    </section>
+    
+  </main>
+  
+  <div id="drugInfoBackdrop">
+      <div id="drugInfo"></div>
+  </div>
+
+  <script src="/js/health.js"></script>
+</body>
 </html>

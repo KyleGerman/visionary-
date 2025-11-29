@@ -11,6 +11,7 @@ const profileSection = require('./profile');
 const appointments = require('./appointments');
 const messages = require('./messages');
 const actualDashboard = require('./dashboard');
+const health = require('./health');
 
 
 // AUTHORIZATIONS //
@@ -47,7 +48,9 @@ router.get('/messages', auth.verify, messages.getMessages);
 router.post('/messages', auth.verify, messages.sendMessage);
 router.put('/messages/:id/read', auth.verify, messages.markRead);
 
-//
+// Health
+router.get('/health', auth.verify, health.loadHealth);
+router.post('/medInfo', health.medInfo);
 
 
 module.exports = router;
