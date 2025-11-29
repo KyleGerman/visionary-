@@ -58,10 +58,9 @@ exports.login = async (req, res, next) => {
 
 // reads JWT, verifies, and gets user_id
 exports.verify = async (req, res, next) => {
+
     const authHeader = req.headers['authorization'];
     if (!authHeader) return res.sendStatus(401);
-    
-    console.log('[AUTH] Authorization header:', authHeader);
 
     const token = authHeader.split(' ')[1];
 
@@ -71,8 +70,9 @@ exports.verify = async (req, res, next) => {
             return res.sendStatus(403);
         }
         
-        req.user_id = decoded.id; // ✅ FIXED: req instead of res
-        console.log('[AUTH] User verified, user_id:', req.user_id);
+        // DO NOT CHANGE RES TO REQ UNLESS YOU CHANGE EVERYTHING ELSE
+        res.user_id = decoded.id;
+        
         next();
     });
 };
