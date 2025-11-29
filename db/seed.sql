@@ -36,6 +36,16 @@ INSERT INTO `logins` VALUES (1,11,'BigMan','ASDFG1'),(2,12,'AmazingGrace','12345
 UNLOCK TABLES;
 
 --
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+INSERT INTO `messages` VALUES (1,12,13,'leg','leg huets','2025-11-26 00:00:00',0),(2,12,13,'leg','leg broke','2025-11-26 13:01:37',0),(3,12,13,'leg','leg broke','2025-11-26 13:01:52',0);
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping data for table `patients`
 --
 
