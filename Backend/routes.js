@@ -33,6 +33,7 @@ router.get('/dashboard', auth.verify, profileSection.getDashboard);
 router.put('/dashboard', auth.verify, profileSection.updateFromDashboard);
 
 // Appointments
+router.get('/appointments/doctorNames', auth.verify, appointments.getDoctorNames);
 router.get('/appointments/past/:limit', auth.verify, appointments.showPast);
 router.get('/appointments/past', auth.verify, appointments.showPast);
 

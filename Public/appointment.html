@@ -48,13 +48,23 @@
       <hr />
       <h3>Request new appointment</h3>
       <form id="apptForm">
+
         <label for="scheduled_for">Scheduled for</label>
         <input id="scheduled_for" type="datetime-local" required />
+
         <label for="reason">Reason</label>
         <input id="reason" type="text" />
+
         <label for="notes">Notes</label>
         <textarea id="notes"></textarea>
+
+        <lable for="doctor"> Doctor </lable>
+        <select id="doctorDropdown">
+          <option value="">Select doctor</option>
+        </select>
+
         <div style="margin-top:8px"><button type="submit">Request</button></div>
+
       </form>
     </section>
 

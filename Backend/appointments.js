@@ -13,6 +13,31 @@ const markPastAppointmentsCompleted = () => {
   });
 };
 
+// get doctor names 
+exports.getDoctorNames = (req, res) => {
+  const userId = res.user_id;
+  const query = `select u.first_name, u.last_name, p.provider_id
+                 from users u 
+                 JOIN providers p on p.user_id = u.user_id 
+                 LIMIT 100`;
+
+  db.query (query, (err, results) => {
+
+    // handle any database errors
+    if (err) {
+      console.error("Database query error:", err);
+      return res.status(500).json({ error: 'Internal server error' });
+      }
+
+    // if no user found
+    if (results.length === 0) {
+      return res.status(404).json({ error: 'No providers found' });
+        }
+    res.json(results);
+  });
+
+}
+
 // get appointments for current user (patient)
 exports.getAppointments = (req, res) => {
   const userId = res.user_id;

@@ -62,7 +62,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     upcoming.innerHTML = 'Loading...';
 
     try {
-      const res = await fetch('/api/appointments', { headers: { authorization: 'Bearer ' + token } });
+      const res = await fetch('/api/appointments', 
+        { headers: 
+          { authorization: 'Bearer ' + token } });
 
       if (!res.ok) { 
         upcoming.innerHTML = 'Failed to load'; return; 
@@ -105,6 +107,7 @@ window.addEventListener('DOMContentLoaded', async () => {
       }));
 
       updateCalendar(rows);
+      fillDropdown();
     }
 
     catch (err) { 
@@ -201,15 +204,18 @@ window.addEventListener('DOMContentLoaded', async () => {
     const scheduled_for = document.getElementById('scheduled_for').value;
     const reason = document.getElementById('reason').value;
     const notes = document.getElementById('notes').value;
+    const provider_id = document.getElementById('doctorDropdown').value;
+
+    if (!provider_id) {
+      alert('Please select a doctor');
+      return;
+    }
 
     // Convert datetime-local format "2025-11-27T09:45" to MySQL format "2025-11-27 09:45:00"
     const [date, time] = scheduled_for.split('T');
     const scheduled_for_mysql = `${date} ${time}:00`;
 
-    // random provider for test
-    const provider_id = Math.floor(Math.random() * 20) + 1; 
-
-    console.log('Sending scheduled_for:', scheduled_for_mysql);
+    console.log('Sending scheduled_for:', scheduled_for_mysql, 'provider_id:', provider_id);
 
     try {
       const res = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json', authorization: 'Bearer ' + token }, body: JSON.stringify({ scheduled_for: scheduled_for_mysql, reason, notes, provider_id }) });
@@ -248,8 +254,51 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // load
+  fillDropdown(token);
   load();
   loadPastAppointments();
-
+  
 });
+
+async function fillDropdown (token) {
+
+  try {
+    const res = await fetch('/api/appointments/doctorNames', { 
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'authorization': 'Bearer ' + token }
+      });
+    
+    console.log('Doctor fetch response status:', res.status);
+    
+    // if response is not ok, show error message
+    if (!res.ok) {
+      const data = await res.json();
+      console.error("Failed to fetch doctors:", data.error || "Unknown error");
+      return;
+    }
+
+    const data = await res.json();
+    console.log('Doctors received:', data);
+    
+    const select = document.getElementById("doctorDropdown");
+    
+    if (!select) {
+      console.error("Doctor dropdown element not found");
+      return;
+    }
+
+    data.forEach(doc => {
+      const option = document.createElement("option");
+      option.value = doc.provider_id;
+      option.textContent = doc.first_name + " " + doc.last_name;
+      select.appendChild(option);
+      console.log('Added doctor:', doc.first_name, doc.last_name);
+    });
+    
+    console.log('Dropdown populated with', data.length, 'doctors');
+  } catch (err) {
+    console.error("Error loading doctors:", err);
+  }
+}
