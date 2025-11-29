@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 9.5.0, for macos26.1 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.44, for Linux (x86_64)
 --
 -- Host: localhost    Database: Visionary
 -- ------------------------------------------------------
--- Server version	9.5.0
+-- Server version	8.0.44-0ubuntu0.24.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,14 +14,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
--- SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '07504c7e-c94f-11f0-a6df-95a0641439e1:1-35';
 
 --
 -- Table structure for table `appointments`
@@ -62,30 +54,7 @@ CREATE TABLE `logins` (
   PRIMARY KEY (`login_id`),
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `login_update` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Login information';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `messages`
---
-
-DROP TABLE IF EXISTS `messages`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `messages` (
-  `message_id` int NOT NULL AUTO_INCREMENT,
-  `sender_id` int NOT NULL,
-  `recipient_id` int NOT NULL,
-  `subject` varchar(255) DEFAULT '',
-  `body` text NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`message_id`),
-  KEY `sender_id` (`sender_id`),
-  KEY `recipient_id` (`recipient_id`),
-  CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`recipient_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Login information';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,6 +73,31 @@ CREATE TABLE `patients` (
   UNIQUE KEY `user_id` (`user_id`),
   CONSTRAINT `user_update` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Patient info';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `prescriptions`
+--
+
+DROP TABLE IF EXISTS `prescriptions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `prescriptions` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key, prescrip id',
+  `patient_id` int NOT NULL COMMENT 'Link to patient',
+  `provider_id` int DEFAULT NULL COMMENT 'link to prescriber',
+  `ndc` varchar(14) NOT NULL COMMENT 'drug code w/ hyphens',
+  `dosage` varchar(10) NOT NULL COMMENT 'prescription dose',
+  `date_started` datetime DEFAULT NULL COMMENT 'day prescribed',
+  `reason` varchar(255) NOT NULL COMMENT 'reason prescribed',
+  `medication_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `patient_id` (`patient_id`,`ndc`,`date_started`),
+  KEY `provider_update` (`provider_id`),
+  CONSTRAINT `patient_update` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`patient_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `provider_update` FOREIGN KEY (`provider_id`) REFERENCES `providers` (`provider_id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `ndc_insert_check` CHECK (regexp_like(`ndc`,_utf8mb4'^([0-9]{4}-[0-9]{4}-[0-9]{2}|[0-9]{5}-[0-9]{3}-[0-9]{2}|[0-9]{5}-[0-9]{4}-[0-9]{1})$'))
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='assigned prescriptions';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,9 +137,8 @@ CREATE TABLE `users` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `phone` (`phone`),
   CONSTRAINT `users_chk_1` CHECK ((`gender` in (_utf8mb4'M',_utf8mb4'F',_utf8mb4'Q')))
-) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Main table for all users';
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Main table for all users';
 /*!40101 SET character_set_client = @saved_cs_client */;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -156,4 +149,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-26 13:35:20
+-- Dump completed on 2025-11-29 14:10:20
