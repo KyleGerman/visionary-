@@ -106,7 +106,7 @@ exports.medInfo = async (req, res) => {
         // extract SetID 
         const ndc_json = await ndc_response.json();
         const setid = ndc_json.data[0].setid;
-        console.log("setid retrieved")
+        console.log("setid retrieved");
         
         // request SPL using setid
         console.log("Calling API for SPL...");
@@ -116,10 +116,10 @@ exports.medInfo = async (req, res) => {
         console.log("HTTPS status:", spl_response.status);
 
         const xmlText = await spl_response.text();
-        console.log("XML retrieved)")
+        console.log("XML retrieved")
 
         // stream XML, extract relevant data
-        const patient_label_codes = ['59845-8', '4  ', '42230-3'];
+        const patient_label_codes = ['59845-8', '42231-1', '42230-3'];
 
         const parser = sax.parser(true, { trim: true, normalize: true }); 
 
@@ -206,7 +206,6 @@ exports.medInfo = async (req, res) => {
         };
 
         parser.write(xmlText).close();
-        console.log('Parse successful');
         res.json({ medicationHtml: sections });
 
     }   catch (err) {
