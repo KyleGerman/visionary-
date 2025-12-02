@@ -15,7 +15,6 @@ const markPastAppointmentsCompleted = () => {
 
 // get doctor names 
 exports.getDoctorNames = (req, res) => {
-  const userId = res.user_id;
   const query = `select u.first_name, u.last_name, p.provider_id
                  from users u 
                  JOIN providers p on p.user_id = u.user_id 

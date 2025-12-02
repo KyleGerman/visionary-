@@ -254,7 +254,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  fillDropdown(token);
+  if (token) {
+    fillDropdown(token);
+  }
   load();
   loadPastAppointments();
   
@@ -263,6 +265,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 async function fillDropdown (token) {
 
   try {
+    if (!token) {
+      console.error("No token provided to fillDropdown");
+      return;
+    }
+    
+    console.log("Token in fillDropdown:", token.substring(0, 20) + "...");
+    
     const res = await fetch('/api/appointments/doctorNames', { 
           method: 'GET',
           headers: {
