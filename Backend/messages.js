@@ -7,8 +7,21 @@ exports.getMessages = (req, res) => {
   
   console.log('[MESSAGES] Getting messages for user:', userId);
   
-  const q = `SELECT * FROM messages WHERE sender_id = ? OR recipient_id = ? ORDER BY created_at DESC, recipient_id`;
+ const q = `
+    SELECT 
+      m.*,
+      s.first_name AS sender_first_name,
+      s.last_name AS sender_last_name,
+      r.first_name AS recipient_first_name,
+      r.last_name AS recipient_last_name
+    FROM messages m
+    JOIN users s ON m.sender_id = s.user_id
+    JOIN users r ON m.recipient_id = r.user_id
+    WHERE m.sender_id = ? OR m.recipient_id = ?
+    ORDER BY m.created_at DESC
+  `;
 
+  
   db.query(q, [userId, userId], (err, rows) => {
     if (err) {
       console.error('[MESSAGES] Database error:', err);
