@@ -4,71 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Visionary Health - Health</title>
+
+  <!-- EXACT SAME STYLING AS DASHBOARD -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Only Health-specific styles below -->
   <style>
-    body {
-      font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f8;
-      margin: 0;
-      padding: 1.25rem;
-    }
-
-    header {
-      background: #0072c6;
-      color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-    }
-
-    .container { 
-      padding:2rem; 
-      max-width:1000px; 
-      margin:auto 
-    }
-
-    .card {
-      background: #fff;
-      padding: 1.25rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-      margin-bottom: 1.25rem;
-    }
-
-    .page-title {
-      font-size: 2rem;
-      font-weight: bold;
-      margin: 1.5rem 0;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
     #medHistCont {
       white-space: pre-wrap;
       line-height: 1.5;
-      margin-top: 0.625rem;
     }
 
     #prescriptList {
-      margin-top: 0.625rem;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px 14px;
-      background: #3498db;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+      margin-top: 0.75rem;
     }
 
     #drugInfoBackdrop {
@@ -89,14 +37,18 @@
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);  
+      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);
     }
   </style>
 </head>
 
 <body>
+
+  <!-- SAME HEADER AS DASHBOARD -->
   <header>
-    <div class="logo"><h1 style="margin: 0">Visionary</h1></div>
+    <div class="logo">
+      <h1>Visionary</h1>
+    </div>
     <nav>
       <a href="dashboard.html">Dashboard</a>
       <a href="appointment.html">Appointments</a>
@@ -108,26 +60,25 @@
   </header>
 
   <main class="container">
-    <h2>Health</h2>
+    <section class="card">
+      <h2>Health</h2>
+    </section>
 
     <section class="card">
       <h3>Medical History</h3>
       <hr />
       <div id="medHistCont"></div>
-      <br>
     </section>
 
     <section class="card">
       <h3>Current Prescriptions</h3>
       <i>Click on a medication to find out more</i>
-      <br><br>
       <div id="prescriptList"></div>
     </section>
-    
   </main>
   
   <div id="drugInfoBackdrop">
-      <div id="drugInfo"></div>
+    <div id="drugInfo"></div>
   </div>
 
   <script src="/js/health.js"></script>
