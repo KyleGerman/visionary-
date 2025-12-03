@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // load dashboard data
   await namePage(token);
   await updateAppointments(token);
+  await updateMessage(token);
 
 });
 
@@ -119,4 +120,41 @@ async function updateAppointments(token) {
       console.error("Error fetching profile data:", err);
   }
 
+}
+
+// update messages on dashboard
+async function updateMessage(token) {
+  try {
+    const res = await fetch ('/api/dashboard/getMessages', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': 'Bearer ' + token }
+    });
+    
+    const data = await res.json();
+
+    // if response is not ok, show error message
+    if (!res.ok) {
+        this.alert(data.error || "Failed to fetch profile data.");
+        return;
+    }
+
+    // populate messages grid
+    const theList = document.getElementById("messagesList");
+    theList.innerHTML = ""; 
+
+    // add each message to the list
+    data.forEach ( a => {
+    const li = document.createElement('li');
+    const count = a.message_count > 1 ? `${a.message_count} messages from` : `1 message from`;
+    li.textContent = `${count} ${a.first_name} ${a.last_name}`;
+    theList.appendChild(li);
+    });    
+  }
+
+  // catch any errors during fetch
+  catch (err) {
+      console.error("Error fetching profile data:", err);
+  }
 }

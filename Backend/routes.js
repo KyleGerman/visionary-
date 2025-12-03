@@ -28,10 +28,12 @@ router.put('/profile', auth.verify, profileSection.updateProfile);
 
 // Update Appointment Status on Dashboard
 router.get('/appointmentData', auth.verify, actualDashboard.getDashboardData);
+router.get ('/dashboard/getMessages', auth.verify, actualDashboard.getMessagesDashboard);
 
 // Dashboard: get and update dashboard-specific user info
 router.get('/dashboard', auth.verify, profileSection.getDashboard);
 router.put('/dashboard', auth.verify, profileSection.updateFromDashboard);
+
 
 // Appointments
 router.get('/appointments/doctorNames', auth.verify, appointments.getDoctorNames);

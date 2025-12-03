@@ -44,7 +44,6 @@ exports.getAppointments = (req, res) => {
   // Mark past appointments as completed before fetching
   markPastAppointmentsCompleted();
   
-  // we need patient_id from patients table
   // Format scheduled_for as a string to avoid timezone conversion
   const q = `SELECT a.appointment_id, a.patient_id, a.provider_id, a.created_at, DATE_FORMAT(a.scheduled_for, '%Y-%m-%d %H:%i:%s') as scheduled_for, a.reason, a.notes, a.status FROM appointments a
              JOIN patients p ON p.patient_id = a.patient_id
