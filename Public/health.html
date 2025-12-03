@@ -9,14 +9,42 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- Only Health-specific styles below -->
+
   <style>
+    .cardA {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      margin-bottom: 1.5rem;
+    }
+
+    .cardB {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+
+    .cardB:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .sectionHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     #medHistCont {
       white-space: pre-wrap;
       line-height: 1.5;
     }
 
     #prescriptList {
-      margin-top: 0.75rem;
+      margin-top: 0.625rem;
     }
 
     #drugInfoBackdrop {
@@ -27,7 +55,7 @@
       align-items: center;
       justify-content: center;
       z-index: 9999;
-    }
+    } 
     
     #drugInfo {
       background: white;
@@ -37,8 +65,41 @@
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);
+      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);  
+      
     }
+
+    #medHistFormBack {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    } 
+
+    #medHistForm {
+      background: white;
+      padding: 1.25rem;
+      border-radius: 10px;
+      max-width: 50rem;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 0 1.25rem rgba(0,0,0,0.3);  
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #medHistText {
+    width: 100%;       /* Make textarea fill the form width */
+    box-sizing: border-box;  /* Include padding & border in width */
+    min-height: 150px; /* Optional: give it a reasonable height */
+    resize: vertical;  /* Allow vertical resize only */
+    }
+
   </style>
 </head>
 
@@ -60,26 +121,37 @@
   </header>
 
   <main class="container">
-    <section class="card">
-      <h2>Health</h2>
-    </section>
+    <h2>Health</h2>
 
-    <section class="card">
-      <h3>Medical History</h3>
-      <hr />
+    <section class="cardA">
+      <div class="sectionHeader">
+        <h3>Medical History</h3>
+        <button id="editMedHistBtn">Update History</button>
+       </div>
+      <br>
+       <hr />
       <div id="medHistCont"></div>
     </section>
 
-    <section class="card">
+    <section class="cardA">
       <h3>Current Prescriptions</h3>
       <i>Click on a medication to find out more</i>
       <div id="prescriptList"></div>
     </section>
+
+    <div id="drugInfoBackdrop">
+      <div id="drugInfo"></div>
+    </div>
+
+    <div id="medHistFormBack">
+      <form id="medHistForm">
+        <label for="medHistText">Update Medical History:</label>
+        <textarea id="medHistText"></textarea>
+        <button type="button" id="saveMedHistBtn">Save</button>
+      </form>
+    </div>
+    
   </main>
-  
-  <div id="drugInfoBackdrop">
-    <div id="drugInfo"></div>
-  </div>
 
   <script src="/js/health.js"></script>
 </body>
