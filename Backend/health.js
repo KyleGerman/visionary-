@@ -215,4 +215,26 @@ exports.medInfo = async (req, res) => {
 };
 
 
-// delete prescription entry
+// update Medical History
+exports.medUpdate = async (req, res) => {
+    const userId = res.user_id;
+    const { medUpdate } = req.body;
+
+    db.query(`SELECT * FROM patients WHERE user_id = ?`, [userId], (err, results) => {
+    
+        if (err) return res.status(500).json({ error: err });
+        if (!results.length) return res.status(401).json({ error: 'User not found' });
+
+        const patientId = results[0].patient_id; 
+
+        db.query(
+            `UPDATE patients SET med_history = ? WHERE patient_id = ?`,
+            [medUpdate, patientId], 
+            (err) => {
+                if (err) return res.status(500).json({ error: err });
+
+                return res.status(200).json({ message: 'Medical history updated successfully' });
+            }
+        );
+    }
+)};

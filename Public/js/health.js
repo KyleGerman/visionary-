@@ -9,21 +9,28 @@ window.addEventListener('DOMContentLoaded', async () => {
     async function load() {
         
         const medHistCont = document.getElementById('medHistCont');
-        const prescriptList = document.getElementById('prescriptList')
+        const prescriptList = document.getElementById('prescriptList');
         
         medHistCont.innerHTML = 'Loading...';
         prescriptList.innerHTML = 'Loading...';
         
         try {
             const response = await fetch('/api/health', {
+                method: 'GET',
                 headers: { authorization: 'Bearer ' + token } 
             });
            
             if (!response.ok) { medHistCont.innerHTML = 'Failed to load all'; return; }
             
             const healthData = await response.json();
+
+            let formattedText = healthData.medHistory 
+                .replace(/\\n/g, '\n')   // line breaks
+                .replace(/\\t/g, '\t');  // tabs
+
             
-            medHistCont.innerHTML = healthData.medHistory;
+            medHistCont.textContent = formattedText;
+
             if (!healthData.medHistory || healthData.medHistory.trim() === '') {
                 medHistCont.innerHTML = '<p>No medical history found</p>';
                 return;
@@ -41,7 +48,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
             prescriptData.forEach(item => {
                 const box = document.createElement('div');
-                box.classList.add('prescriptionBox');
+                box.classList.add('prescriptionBox', 'cardB');
                 // NOTE: current string returns 'Provider ID'. Provider name would require an extra backend join in health.js
                 box.innerHTML = `
                     <hr /><br>
@@ -99,3 +106,42 @@ async function drugLoad(ndc) {
         console.error(error);
     };
 };
+
+
+const medHistCont = document.getElementById('medHistCont');
+const medFBack = document.getElementById('medHistFormBack');
+
+document.getElementById('editMedHistBtn').addEventListener('click', () => {
+    document.getElementById('medHistText').value = medHistCont.textContent;
+    medFBack.style.display = 'flex';
+});
+
+document.getElementById('saveMedHistBtn').addEventListener('click', async () => {
+    const medUpdateText = document.getElementById('medHistText').value;
+    const token = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('/api/medUpdate', {
+            method: 'Post',
+            headers: { 
+                'Content-Type': 'application/json',
+                authorization: 'Bearer ' + token
+            },
+            body: JSON.stringify({ medUpdate: medUpdateText })
+        });
+
+        if (!response.ok) {
+            medHistCont.textContent = 'Failed to load all';
+            return;
+        }
+
+        if (response.ok) {
+            medHistCont.textContent = medUpdateText;
+            medFBack.style.display = 'none';
+        }
+
+    } catch (err) {
+        console.error(err);
+        medFBack.style.display = 'none';
+    }
+});

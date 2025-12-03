@@ -51,6 +51,7 @@ router.put('/messages/:id/read', auth.verify, messages.markRead);
 // Health
 router.get('/health', auth.verify, health.loadHealth);
 router.post('/medInfo', health.medInfo);
+router.post('/medUpdate', auth.verify, health.medUpdate);
 
 
 module.exports = router;
