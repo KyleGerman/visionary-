@@ -51,3 +51,27 @@ exports.getDashboardData = (req, res) => {
         });
         
 };
+
+// selects first and last name of the sender, counts it for frontend function
+exports.getMessagesDashboard = (req, res) => {
+
+  const userId = res.user_id;
+
+  const query = `SELECT u.first_name, u.last_name, COUNT(*) as message_count
+                 FROM messages m JOIN users u ON m.sender_id = u.user_id
+                 WHERE m.recipient_id = ?
+                 GROUP BY m.sender_id, u.first_name, u.last_name
+                 LIMIT 3`;
+  
+  db.query (query, [userId], (err,results) => {
+
+        // handle any database errors
+        if (err) {
+            console.error("Database query error:", err);
+            return res.status(500).json({ error: 'Internal server error' });
+        }
+
+        // send the message dashboard data as JSON response
+        res.json(results);
+  });
+}
